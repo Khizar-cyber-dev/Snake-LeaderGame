@@ -29,26 +29,26 @@ const board = document.getElementById('board');
 
     function startGame() {
         const numPlayers = parseInt(numPlayersSelect.value);
-        players = []; // Reset players array
-        currentPlayerIndex = 0; // Reset current player
-        messageContainer.style.display = 'none'; // Hide the message container
+        players = [];
+        currentPlayerIndex = 0;
+        messageContainer.style.display = 'none';
         header.style.display = 'none';
-        // Initialize players and set their starting position
+        
         for (let i = 1; i <= numPlayers; i++) {
             const player = document.getElementById(`player-${i}`);
             player.style.display = 'block';
-            player.style.top = '0px'; // Reset player position visually
-            player.style.left = '0px'; // Reset player position visually
+            player.style.top = '0px';
+            player.style.left = '0px';
             players.push({ element: player, position: 1 });
         }
 
-        playerForm.style.display = 'none'; // Hide form to select players
-        gameContainer.style.display = 'flex'; // Show the game container
+        playerForm.style.display = 'none';
+        gameContainer.style.display = 'flex';
         gameContainer.style.justifyContent = 'space-around';
         header.style.display = 'block';
 
-        updatePlayerPosition(); // Update initial player position on board
-        drawSnakesAndLadders(); // Draw snakes and ladders on the board
+        updatePlayerPosition();
+        drawSnakesAndLadders();
     }
 
     function rollDice() {
@@ -67,7 +67,7 @@ const board = document.getElementById('board');
 
         // Check if newPosition exceeds 100
         if (newPosition > 100) {
-            newPosition = player.position; // Player remains in the same position
+            newPosition = player.position;
         } else {
             // Check for snakes or ladders
             if (snakes[newPosition]) {
@@ -81,14 +81,14 @@ const board = document.getElementById('board');
         updatePlayerPosition();
 
         if (player.position === 100) {
-            checkGameCompletion(); // Check if all players have completed the game
+            checkGameCompletion();
         }
 
-        nextPlayer(); // Move to the next player
+        nextPlayer();
     }
 
     function nextPlayer() {
-    // Check if all players have finished the game
+    
     const unfinishedPlayers = players.filter(player => player.position < 100);
     
     if (unfinishedPlayers.length === 0) {
@@ -97,10 +97,10 @@ const board = document.getElementById('board');
         return;
     }
 
-    // Move to the next player
+    
     do {
         currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
-    } while (players[currentPlayerIndex].position === 100); // Skip players who have finished
+    } while (players[currentPlayerIndex].position === 100);
 }
 
 
@@ -119,29 +119,29 @@ const board = document.getElementById('board');
     function checkGameCompletion() {
         const allPlayersFinished = players.every(player => player.position === 100);
         if (allPlayersFinished) {
-            showVictoryPage(); // Show the victory page
+            showVictoryPage();
         }
     }
 
     function showVictoryPage() {
-        header.style.display = 'none'; //Hide the header of the game
-        gameContainer.style.display = 'none'; // Hide the game container
-        messageContainer.style.display = 'block'; // Show the victory page
+        header.style.display = 'none';
+        gameContainer.style.display = 'none';
+        messageContainer.style.display = 'block';
     }
 
     function refreshPage() {
-        location.reload(); // Reload the page to restart the game
+        location.reload();
     }
 
     function restartGame() {
-        playerForm.style.display = 'block'; // Show the player selection form
-        gameContainer.style.display = 'none'; // Hide the game board
-        header.style.display = 'none';// Hide the header of the game
-        dice.textContent = 'Roll'; // Reset dice text
-        numPlayersSelect.value = 2; // Reset to default 2 players
+        playerForm.style.display = 'block';
+        gameContainer.style.display = 'none';
+        header.style.display = 'none';
+        dice.textContent = 'Roll';
+        numPlayersSelect.value = 2;
     }
 
-    // Draw snakes and ladders
+
     function drawLine(x1, y1, x2, y2, color) {
         const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
         line.setAttribute("x1", x1);
