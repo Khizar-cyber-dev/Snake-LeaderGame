@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake and Ladder Game</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background: linear-gradient(to bottom right, #d4f1f9, #e0f7fa);
+            font-family: Arial, sans-serif;
+        }
+        .game-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 90vh;
+        }
+        .board {
+            display: grid;
+            grid-template-columns: repeat(10, 45px);
+            grid-template-rows: repeat(10, 45px);
+            gap: 5px;
+            background-color: #f0f8ff;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        .cell {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: white;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: bold;
+            position: relative;
+        }
+        .cell img {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+        }
+        .player {
+            text-align: center;
+            width: 20px;
+            height: 20px;
+            border-radius: 30%;
+            position: absolute;
+            transition: 0.5s;
+            color: white;
+            font-size: bold;
+        }
+        .controls {
+            /* margin-left: 20px; */
+            text-align: center;
+        }
+        .dice-parent{
+            display: flex;
+            justify-content: center;
+        }
+        .dice {
+            font-size: 40px;
+            margin-bottom: 20px;
+            transition: transform 0.5s;
+            background-color: white;
+            padding: 30px  0px;
+            width: 150px;
+        }
+        .btn-roll {
+            background-color: #d63384;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .btn-roll:hover {
+            background-color: #c2185b;
+        }
+        .line {
+            position: absolute;
+            width: 2px;
+            background-color: black;
+            height: 100%;
+        }
+        .player-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+        }
+        .player-form select {
+            margin-bottom: 20px;
+            padding: 10px;
+            font-size: 16px;
+        }
+        .player-form button {
+            background-color: #d63384;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .player-form button:hover {
+            background-color: #c2185b;
+        }
+        #message-container {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            background-color: #f0f0f0;
+            padding: 50px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: green;
+        }
+
+        #restart-button {
+            padding: 10px 20px;
+            font-size: 1.5rem;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #restart-button:hover {
+            background-color: #218838;
+        }
+
+        /* Media Quries */
+        @media (max-width: 1400px) and (max-width: 769px) {
+        .line {
+            position: absolute;
+            width: 2px;
+            background-color: black;
+            height: 100%;
+        }
+    }
+
+        @media(max-width: 768px){
+            .board {
+            display: grid;
+            grid-template-columns: repeat(10, 30px);
+            grid-template-rows: repeat(10, 30px);
+            gap: 5px;
+        }
+        .player{
+            width: 18px;
+        }
+        /* .line{
+            position: absolute;
+            width: 2px;
+            background-color: black;
+            height: 55%;
+        } */
+    }
+    @media(max-width: 660px){
+        .game-container{
+            display: flex;
+            flex-direction: column;
+            gap: 3%;
+            align-items: space-around;
+        }
+        .dice-parent{
+            height: 100px;
+        }
+        .dice{
+            width: 120px;
+            height: 100px;
+        }
+        .btn-roll{
+            margin-top: 12px;
+        }
+    }
+    @media(max-width: 500px){
+        .board {
+            display: grid;
+            grid-template-columns: repeat(10, 30px);
+            grid-template-rows: repeat(10, 30px);
+            gap: 4px;
+        }
+    }
+    @media(max-width:445px){
+        .board {
+            display: grid;
+            grid-template-columns: repeat(10, 30px);
+            grid-template-rows: repeat(10, 30px);
+            gap: 3px;
+        }
+        #message-container{
+            padding: 30px;
+        }
+        /* .line{
+            height: 20%;
+        } */
+    }
+    @media(max-width: 390px){
+        #message-container{
+            padding: 10px;
+        }
+        .board {
+            display: grid;
+            grid-template-columns: repeat(10, 27px);
+            grid-template-rows: repeat(10, 27px);
+            gap: 3px;
+        }
+    }
+    </style>
+</head>
+<body>
+    <div class="player-form" id="player-form">
+        <h2>Select Number of Players</h2>
+        <select id="num-players">
+            <option value="1">1 Player</option>
+            <option value="2">2 Players</option>
+            <option value="3">3 Players</option>
+            <option value="4">4 Players</option>
+        </select>
+        <button onclick="startGame()">Start Game</button>
+    </div>
+    <div class="head m-0 p-0" id="head" style="display: none;">
+        <h2 class="text-center d-block">Snake and Ladder Game</h2>
+    </div>
+    <div class="game-container" id="game-container" style="display: none;">
+        <div class="board" id="board">
+            <!-- Generate cells from 100 to 1 -->
+            <div class="cell" id="cell-91">91</div>
+            <div class="cell" id="cell-92">92</div>
+            <div class="cell" id="cell-93">93</div>
+            <div class="cell" id="cell-94">94</div>
+            <div class="cell" id="cell-95">95</div>
+            <div class="cell" id="cell-96">96</div>
+            <div class="cell" id="cell-97">97</div>
+            <div class="cell" id="cell-98">98</div>
+            <div class="cell" id="cell-99">99</div>
+            <div class="cell" id="cell-100">100</div>
+            <div class="cell" id="cell-81">81</div>
+            <div class="cell" id="cell-82">82</div>
+            <div class="cell" id="cell-83">83</div>
+            <div class="cell" id="cell-84">84</div>
+            <div class="cell" id="cell-85">85</div>
+            <div class="cell" id="cell-86">86</div>
+            <div class="cell" id="cell-87">87</div>
+            <div class="cell" id="cell-88">88</div>
+            <div class="cell" id="cell-89">89</div>
+            <div class="cell" id="cell-90">90</div>
+            <div class="cell" id="cell-71">71</div>
+            <div class="cell" id="cell-72">72</div>
+            <div class="cell" id="cell-73">73</div>
+            <div class="cell" id="cell-74">74</div>
+            <div class="cell" id="cell-75">75</div>
+            <div class="cell" id="cell-76">76</div>
+            <div class="cell" id="cell-77">77</div>
+            <div class="cell" id="cell-78">78</div>
+            <div class="cell" id="cell-79">79</div>
+            <div class="cell" id="cell-80">80</div>
+            <div class="cell" id="cell-61">61</div>
+            <div class="cell" id="cell-62">62</div>
+            <div class="cell" id="cell-63">63</div>
+            <div class="cell" id="cell-64">64</div>
+            <div class="cell" id="cell-65">65</div>
+            <div class="cell" id="cell-66">66</div>
+            <div class="cell" id="cell-67">67</div>
+            <div class="cell" id="cell-68">68</div>
+            <div class="cell" id="cell-69">69</div>
+            <div class="cell" id="cell-70">70</div>
+            <div class="cell" id="cell-51">51</div>
+            <div class="cell" id="cell-52">52</div>
+            <div class="cell" id="cell-53">53</div>
+            <div class="cell" id="cell-54">54</div>
+            <div class="cell" id="cell-55">55</div>
+            <div class="cell" id="cell-56">56</div>
+            <div class="cell" id="cell-57">57</div>
+            <div class="cell" id="cell-58">58</div>
+            <div class="cell" id="cell-59">59</div>
+            <div class="cell" id="cell-60">60</div>
+            <div class="cell" id="cell-41">41</div>
+            <div class="cell" id="cell-42">42</div>
+            <div class="cell" id="cell-43">43</div>
+            <div class="cell" id="cell-44">44</div>
+            <div class="cell" id="cell-45">45</div>
+            <div class="cell" id="cell-46">46</div>
+            <div class="cell" id="cell-47">47</div>
+            <div class="cell" id="cell-48">48</div>
+            <div class="cell" id="cell-49">49</div>
+            <div class="cell" id="cell-50">50</div>
+            <div class="cell" id="cell-31">31</div>
+            <div class="cell" id="cell-32">32</div>
+            <div class="cell" id="cell-33">33</div>
+            <div class="cell" id="cell-34">34</div>
+            <div class="cell" id="cell-35">35</div>
+            <div class="cell" id="cell-36">36</div>
+            <div class="cell" id="cell-37">37</div>
+            <div class="cell" id="cell-38">38</div>
+            <div class="cell" id="cell-39">39</div>
+            <div class="cell" id="cell-40">40</div>
+            <div class="cell" id="cell-21">21</div>
+            <div class="cell" id="cell-22">22</div>
+            <div class="cell" id="cell-23">23</div>
+            <div class="cell" id="cell-24">24</div>
+            <div class="cell" id="cell-25">25</div>
+            <div class="cell" id="cell-26">26</div>
+            <div class="cell" id="cell-27">27</div>
+            <div class="cell" id="cell-28">28</div>
+            <div class="cell" id="cell-29">29</div>
+            <div class="cell" id="cell-30">30</div>
+            <div class="cell" id="cell-11">11</div>
+            <div class="cell" id="cell-12">12</div>
+            <div class="cell" id="cell-13">13</div>
+            <div class="cell" id="cell-14">14</div>
+            <div class="cell" id="cell-15">15</div>
+            <div class="cell" id="cell-16">16</div>
+            <div class="cell" id="cell-17">17</div>
+            <div class="cell" id="cell-18">18</div>
+            <div class="cell" id="cell-19">19</div>
+            <div class="cell" id="cell-20">20</div>
+            <div class="cell" id="cell-1">1</div>
+            <div class="cell" id="cell-2">2</div>
+            <div class="cell" id="cell-3">3</div>
+            <div class="cell" id="cell-4">4</div>
+            <div class="cell" id="cell-5">5</div>
+            <div class="cell" id="cell-6">6</div>
+            <div class="cell" id="cell-7">7</div>
+            <div class="cell" id="cell-8">8</div>
+            <div class="cell" id="cell-9">9</div>
+            <div class="cell" id="cell-10">10</div>
+            <!--Players of the game-->
+            <div class="player" id="player-1" style="top: 450px; left: 0; background-color: red;">1</div>
+            <div class="player" id="player-2" style="top: 450px; left: 20px; background-color: blue; display: none;">2</div>
+            <div class="player" id="player-3" style="top: 450px; left: 40px; background-color: green; display: none;">3</div>
+            <div class="player" id="player-4" style="top: 450px; left: 60px; background-color: yellow; display: none;">4</div>
+            <svg id="lines" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+                <!-- Lines for snakes and ladders will be drawn here -->
+            </svg>
+        </div>
+        <div class="controls">
+            
+            <div class="dice-parent"><div class="dice" id="dice">*</div></div>
+            <button class="btn-roll" onclick="rollDice()">Roll Dice</button>
+            <p id="player-position">Player Position: 1</p>
+            <p id="rolled">You rolled a 4</p>
+        </div>
+    </div>
+
+    <!--Victory page-->
+    <div id="message-container">
+        <h1>Congratulations!</h1>
+        <h1> You Win!</h1>
+        <p>All players have reached the 100th block.</p>
+        <button id="restart-button" onclick="refreshPage()">Restart Game</button>
+    </div>
+
+    <script>
+    
+    const board = document.getElementById('board');
+    const header = document.getElementById('head');
+    const dice = document.getElementById('dice');
+    const playerPositionText = document.getElementById('player-position');
+    const rolledText = document.getElementById('rolled');
+    const lines = document.getElementById('lines');
+    const playerForm = document.getElementById('player-form');
+    const gameContainer = document.getElementById('game-container');
+    const numPlayersSelect = document.getElementById('num-players');
+    const messageContainer = document.getElementById('message-container');
+    const restartButton = document.getElementById('restart-button');
+
+    let players = [];
+    let currentPlayerIndex = 0;
+
+    const snakes = {
+        51: 32,
+        64: 45,
+        80: 42,
+        92: 14
+    };
+
+    const ladders = {
+        9: 33,
+        17: 38,
+        66: 87,
+        78: 99
+    };
+
+    function startGame() {
+        const numPlayers = parseInt(numPlayersSelect.value);
+        players = []; // Reset players array
+        currentPlayerIndex = 0; // Reset current player
+        messageContainer.style.display = 'none'; // Hide the message container
+        header.style.display = 'none';
+        // Initialize players and set their starting position
+        for (let i = 1; i <= numPlayers; i++) {
+            const player = document.getElementById(`player-${i}`);
+            player.style.display = 'block';
+            player.style.top = '0px'; // Reset player position visually
+            player.style.left = '0px'; // Reset player position visually
+            players.push({ element: player, position: 1 });
+        }
+
+        playerForm.style.display = 'none'; // Hide form to select players
+        gameContainer.style.display = 'flex'; // Show the game container
+        gameContainer.style.justifyContent = 'space-around';
+        header.style.display = 'block';
+
+        updatePlayerPosition(); // Update initial player position on board
+        drawSnakesAndLadders(); // Draw snakes and ladders on the board
+    }
+
+    function rollDice() {
+        dice.style.transform = 'rotatez(360deg)';
+        setTimeout(() => {
+            const roll = Math.floor(Math.random() * 6) + 1;
+            dice.textContent = roll;
+            movePlayer(roll);
+            dice.style.transform = 'rotatez(0deg)';
+        }, 500);
+    }
+
+    function movePlayer(roll) {
+        let player = players[currentPlayerIndex];
+        let newPosition = player.position + roll;
+
+        // Check if newPosition exceeds 100
+        if (newPosition > 100) {
+            newPosition = player.position; // Player remains in the same position
+        } else {
+            // Check for snakes or ladders
+            if (snakes[newPosition]) {
+                newPosition = snakes[newPosition];
+            } else if (ladders[newPosition]) {
+                newPosition = ladders[newPosition];
+            }
+        }
+
+        player.position = newPosition;
+        updatePlayerPosition();
+
+        if (player.position === 100) {
+            checkGameCompletion(); // Check if all players have completed the game
+        }
+
+        nextPlayer(); // Move to the next player
+    }
+
+    function nextPlayer() {
+    // Check if all players have finished the game
+    const unfinishedPlayers = players.filter(player => player.position < 100);
+    
+    if (unfinishedPlayers.length === 0) {
+        // All players have finished, so the game should end
+        checkGameCompletion();
+        return;
+    }
+
+    // Move to the next player
+    do {
+        currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
+    } while (players[currentPlayerIndex].position === 100); // Skip players who have finished
+}
+
+
+    function updatePlayerPosition() {
+        players.forEach(player => {
+            const cell = document.getElementById(`cell-${player.position}`);
+            const rect = cell.getBoundingClientRect();
+            const boardRect = board.getBoundingClientRect();
+            player.element.style.top = `${rect.top - boardRect.top}px`;
+            player.element.style.left = `${rect.left - boardRect.left}px`;
+        });
+        playerPositionText.textContent = `Player ${currentPlayerIndex + 1} Position: ${players[currentPlayerIndex].position}`;
+        rolledText.textContent = `You rolled a ${dice.textContent}`;
+    }
+
+    function checkGameCompletion() {
+        const allPlayersFinished = players.every(player => player.position === 100);
+        if (allPlayersFinished) {
+            showVictoryPage(); // Show the victory page
+        }
+    }
+
+    function showVictoryPage() {
+        header.style.display = 'none'; //Hide the header of the game
+        gameContainer.style.display = 'none'; // Hide the game container
+        messageContainer.style.display = 'block'; // Show the victory page
+    }
+
+    function refreshPage() {
+        location.reload(); // Reload the page to restart the game
+    }
+
+    function restartGame() {
+        playerForm.style.display = 'block'; // Show the player selection form
+        gameContainer.style.display = 'none'; // Hide the game board
+        header.style.display = 'none';// Hide the header of the game
+        dice.textContent = 'Roll'; // Reset dice text
+        numPlayersSelect.value = 2; // Reset to default 2 players
+    }
+
+    // Draw snakes and ladders
+    function drawLine(x1, y1, x2, y2, color) {
+        const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        line.setAttribute("x1", x1);
+        line.setAttribute("y1", y1);
+        line.setAttribute("x2", x2);
+        line.setAttribute("y2", y2);
+        line.setAttribute("stroke", color);
+        line.setAttribute("stroke-width", 2);
+        lines.appendChild(line);
+    }
+
+    function drawSnakesAndLadders() {
+        for (const [start, end] of Object.entries(snakes)) {
+            const startCell = document.getElementById(`cell-${start}`);
+            const endCell = document.getElementById(`cell-${end}`);
+            const startRect = startCell.getBoundingClientRect();
+            const endRect = endCell.getBoundingClientRect();
+            const boardRect = board.getBoundingClientRect();
+            drawLine(
+                startRect.left - boardRect.left + 25,
+                startRect.top - boardRect.top + 25,
+                endRect.left - boardRect.left + 25,
+                endRect.top - boardRect.top + 25,
+                'red'
+            );
+        }
+        for (const [start, end] of Object.entries(ladders)) {
+            const startCell = document.getElementById(`cell-${start}`);
+            const endCell = document.getElementById(`cell-${end}`);
+            const startRect = startCell.getBoundingClientRect();
+            const endRect = endCell.getBoundingClientRect();
+            const boardRect = board.getBoundingClientRect();
+            drawLine(
+                startRect.left - boardRect.left + 25,
+                startRect.top - boardRect.top + 25,
+                endRect.left - boardRect.left + 25,
+                endRect.top - boardRect.top + 25,
+                'green'
+            );
+        }
+    }
+
+   
+// Call the function when the page loads
+window.onload = () => {
+    drawSnakesAndLadders();
+};
+
+
+
+
+
+    </script>
+</body>
+</html>

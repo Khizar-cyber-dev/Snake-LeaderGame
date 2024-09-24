@@ -1,0 +1,218 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+body {
+    background: linear-gradient(to bottom right, #d4f1f9, #e0f7fa);
+    font-family: Arial, sans-serif;
+}
+.game-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+}
+.board {
+    display: grid;
+    grid-template-columns: repeat(10, 45px);
+    grid-template-rows: repeat(10, 45px);
+    gap: 5px;
+    background-color: #f0f8ff;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+.cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    position: relative;
+}
+.cell img {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+}
+.player {
+    text-align: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 30%;
+    position: absolute;
+    transition: 0.5s;
+    color: white;
+    font-size: bold;
+}
+.controls {
+    /* margin-left: 20px; */
+    text-align: center;
+}
+.dice-parent{
+    display: flex;
+    justify-content: center;
+}
+.dice {
+    font-size: 40px;
+    margin-bottom: 20px;
+    transition: transform 0.5s;
+    background-color: white;
+    padding: 30px  0px;
+    width: 150px;
+}
+.btn-roll {
+    background-color: #d63384;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+}
+.btn-roll:hover {
+    background-color: #c2185b;
+}
+.line {
+    position: absolute;
+    width: 2px;
+    background-color: black;
+    height: 100%;
+}
+.player-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    text-align: center;
+}
+.player-form select {
+    margin-bottom: 20px;
+    padding: 10px;
+    font-size: 16px;
+}
+.player-form button {
+    background-color: #d63384;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+}
+.player-form button:hover {
+    background-color: #c2185b;
+}
+#message-container {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    background-color: #f0f0f0;
+    padding: 50px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    color: green;
+}
+
+#restart-button {
+    padding: 10px 20px;
+    font-size: 1.5rem;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#restart-button:hover {
+    background-color: #218838;
+}
+
+/* Media Quries */
+@media (max-width: 1400px) and (max-width: 769px) {
+.line {
+    position: absolute;
+    width: 2px;
+    background-color: black;
+    height: 100%;
+}
+}
+
+@media(max-width: 768px){
+    .board {
+    display: grid;
+    grid-template-columns: repeat(10, 30px);
+    grid-template-rows: repeat(10, 30px);
+    gap: 5px;
+}
+.player{
+    width: 18px;
+}
+/* .line{
+    position: absolute;
+    width: 2px;
+    background-color: black;
+    height: 55%;
+} */
+}
+@media(max-width: 660px){
+.game-container{
+    display: flex;
+    flex-direction: column;
+    gap: 3%;
+    align-items: space-around;
+}
+.dice-parent{
+    height: 100px;
+}
+.dice{
+    width: 120px;
+    height: 100px;
+}
+.btn-roll{
+    margin-top: 12px;
+}
+}
+@media(max-width: 500px){
+.board {
+    display: grid;
+    grid-template-columns: repeat(10, 30px);
+    grid-template-rows: repeat(10, 30px);
+    gap: 4px;
+}
+}
+@media(max-width:445px){
+.board {
+    display: grid;
+    grid-template-columns: repeat(10, 30px);
+    grid-template-rows: repeat(10, 30px);
+    gap: 3px;
+}
+#message-container{
+    padding: 30px;
+}
+/* .line{
+    height: 20%;
+} */
+}
+@media(max-width: 390px){
+#message-container{
+    padding: 10px;
+}
+.board {
+    display: grid;
+    grid-template-columns: repeat(10, 27px);
+    grid-template-rows: repeat(10, 27px);
+    gap: 3px;
+}
+}
